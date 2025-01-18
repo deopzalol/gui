@@ -2864,7 +2864,7 @@ function Luna:CreateWindow(WindowSettings)
 
 				local Label
 				if LabelSettings.Style == 1 then
-					Label = Elements.Template.Label:Clone()
+					--Label = Elements.Template.Label:Clone()
 				elseif LabelSettings.Style == 2 then
 					Label = Elements.Template.Info:Clone()
 				elseif LabelSettings.Style == 3 then
