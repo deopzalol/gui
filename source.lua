@@ -2468,74 +2468,7 @@ function Luna:CreateWindow(WindowSettings)
 	local FirstTab = true
 
 	function Window:CreateHomeTab(HomeTabSettings)
-
-		HomeTabSettings = Kwargify({
-			Icon = 1,
-			SupportedExecutors = {"Vega X", "Delta", "Nihon", "Xeno"}, -- THESE DEFAULTS ARE PLACEHOLDERS!! I DO NOT ADVERTISE THESE, THEY ARE JUS THE FIRST THAT CAME TO MIND. I HAVE NO IDEA WHETHER THEYA RE RATS (they prob are) AND IM NOT RESPONSIBLE IF U GET VIRUSES FROM INSTALLING AFTER SEEING THIS LIST
-			DiscordInvite = "noinvitelink" -- The disvord invite link. Do not include the link so for example if my invite was discord.gg/nebula I would put nebula
-		}, HomeTabSettings or {})
-
-		local HomeTab = {}
-
-		local HomeTabButton = Navigation.Tabs.Home
-		HomeTabButton.Visible = true
-		if HomeTabSettings.Icon == 2 then
-			HomeTabButton.ImageLabel.Image = GetIcon("dashboard", "Material")
-		end
-
 		local HomeTabPage = Elements.Home
-		HomeTabPage.Visible = true
-
-		function HomeTab:Activate()
-			tween(HomeTabButton.ImageLabel, {ImageColor3 = Color3.fromRGB(255,255,255)})
-			tween(HomeTabButton, {BackgroundTransparency = 0})
-			tween(HomeTabButton.UIStroke, {Transparency = 0.41})
-
-			Elements.UIPageLayout:JumpTo(HomeTabPage)
-
-			task.wait(0.05)
-
-			for _, OtherTabButton in ipairs(Navigation.Tabs:GetChildren()) do
-				if OtherTabButton.Name ~= "InActive Template" and OtherTabButton.ClassName == "Frame" and OtherTabButton ~= HomeTabButton then
-					tween(OtherTabButton.ImageLabel, {ImageColor3 = Color3.fromRGB(221,221,221)})
-					tween(OtherTabButton, {BackgroundTransparency = 1})
-					tween(OtherTabButton.UIStroke, {Transparency = 1})
-				end
-
-			end
-
-			Window.CurrentTab = "Home"
-		end
-
-		HomeTab:Activate()
-		FirstTab = false
-		HomeTabButton.Interact.MouseButton1Click:Connect(function()
-			HomeTab:Activate()
-		end)
-
-		-- Stolen From Sirius Stuff Begins Here
-
-		HomeTabPage.detailsholder.dashboard.Discord.Interact.MouseButton1Click:Connect(function()
-			setclipboard(tostring("https://discord.gg/"..HomeTabSettings.DiscordInvite)) -- Hunter if you see this I added copy also was too lazy to send u msg
-			if request then
-				request({
-					Url = 'http://127.0.0.1:6463/rpc?v=1',
-					Method = 'POST',
-					Headers = {
-						['Content-Type'] = 'application/json',
-						Origin = 'https://discord.com'
-					},
-					Body = HttpService:JSONEncode({
-						cmd = 'INVITE_BROWSER',
-						nonce = HttpService:GenerateGUID(false),
-						args = {code = HomeTabSettings.DiscordInvite}
-					})
-				})
-			end
-		end)
-
-		local friendsCooldown = 0
-		local function getPing() return math.clamp(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue(), 10, 700) end
 
 		local function format(Int)
 			return string.format("%02i", Int)
@@ -2565,12 +2498,8 @@ function Luna:CreateWindow(WindowSettings)
 
 				-- Region
 				HomeTabPage.detailsholder.dashboard.Server.Region.Value.Text = Localization:GetCountryRegionForPlayerAsync(Players.LocalPlayer)
-
-				checkFriends()
 			end
 		end)()
-
-		-- Stolen From Sirius Stuff ends here
 
 	end
 
